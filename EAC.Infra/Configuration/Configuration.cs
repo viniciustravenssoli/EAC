@@ -23,6 +23,7 @@ namespace EAC.Infra.Configuration
 
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddScoped<ITransferRepository, TransferRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDefaultIdentity<ApplicationUser>()

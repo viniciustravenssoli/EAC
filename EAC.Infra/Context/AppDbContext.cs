@@ -17,6 +17,7 @@ namespace EAC.Infra.Context
         public AppDbContext() { }
         public DbSet<Address> Addresses{ get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<Transfer> Transfers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

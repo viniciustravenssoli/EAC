@@ -38,7 +38,6 @@ namespace EAC.Application.Commands.Addressess.AddAddressToUser
                 ApplicationUser = user, 
             };
 
-
             await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.Address.CreateAddressAsync(address);
             await _unitOfWork.SaveChangesAsync();

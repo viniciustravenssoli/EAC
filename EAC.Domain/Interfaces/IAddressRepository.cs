@@ -11,6 +11,7 @@ namespace EAC.Domain.Interfaces
     {
         Task<int> CreateAddressAsync(Address address);
         Task<Address> GetAddressByIdAsync(int id);
+        Task DeleteAddressAsync(Address address);
         Task<List<Address>> GetAllAsync(int top, int skip);
         Task<List<Address>> GetAllByUserId(int top, int skip, string userId);
     }

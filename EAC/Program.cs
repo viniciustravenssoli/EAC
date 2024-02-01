@@ -11,7 +11,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication();
+builder.Services.AddApplication(builder.Configuration);
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder
+            .AllowAnyOrigin() // Aceitar requisiÃ§Ãµes de qualquer origem
+            .AllowAnyMethod() // Aceitar todos os mÃ©todos HTTP (GET, POST, PUT, DELETE, etc.)
+            .AllowAnyHeader(); // Aceitar todos os cabeÃ§alhos HTTP
+    });
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -20,16 +31,16 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Books", Version = "v1" });
 
-    // Configuração para autenticação usando Bearer token (JWT)
+    // Configuraï¿½ï¿½o para autenticaï¿½ï¿½o usando Bearer token (JWT)
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Token de autorização Bearer no formato JWT",
+        Description = "Token de autorizaï¿½ï¿½o Bearer no formato JWT",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey
     });
 
-    // Adicione a política de autorização
+    // Adicione a polï¿½tica de autorizaï¿½ï¿½o
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {
@@ -87,6 +98,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(); 
 
 app.UseHttpsRedirection();
 

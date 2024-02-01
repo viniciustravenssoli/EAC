@@ -1,4 +1,5 @@
-﻿using EAC.Application.Errors;
+﻿using EAC.Application.Email;
+using EAC.Application.Errors;
 using EAC.Domain.Entities;
 using EAC.Domain.Interfaces;
 using EAC.Domain.Result;
@@ -14,10 +15,12 @@ namespace EAC.Application.Commands.User.CreateUser
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailService _emailService;
 
-        public CreateUserCommandHandler(IUnitOfWork unitOfWork)
+        public CreateUserCommandHandler(IUnitOfWork unitOfWork, IEmailService emailService)
         {
             _unitOfWork = unitOfWork;
+            _emailService = emailService;
         }
 
         public async Task<Result<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -37,7 +40,6 @@ namespace EAC.Application.Commands.User.CreateUser
 
             if (request.Address is not null)
             {
-                // Adiciona o endereço apenas se informado
                 newUser.Addresses.Add(new Address
                 {
                     Bairro = request.Address.Bairro,
@@ -56,6 +58,8 @@ namespace EAC.Application.Commands.User.CreateUser
 
             if (!isCreated.Succeeded)
                 return Result<string>.Failure(isCreated.Errors.Select(error => new ResultError(error.Code, error.Description)).ToList());
+
+            await _emailService.SendWelcomeEmail("Bem vindo", newUser.Email) ;
 
             return Result<string>.Success($"Usuario {newUser.Email}, Registrado com sucesso");
         }

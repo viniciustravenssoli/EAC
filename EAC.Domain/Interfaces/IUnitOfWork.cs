@@ -10,6 +10,7 @@ namespace EAC.Domain.Interfaces
     {
         IAddressRepository Address { get; }
         IApplicationUserRepository User { get; }
+        ITransferRepository Transfer { get; }
 
         Task BeginTransactionAsync();
         Task CommitAsync();

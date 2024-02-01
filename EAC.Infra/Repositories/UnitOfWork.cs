@@ -21,16 +21,19 @@ namespace EAC.Infra.Repositories
             AppDbContext dbContext,
             IApplicationUserRepository user,
             IAddressRepository address,
-            IMediator mediator)
+            IMediator mediator,
+            ITransferRepository transfer)
         {
             _dbContext = dbContext;
             Address = address;
             User = user;
             _mediator = mediator;
+            Transfer = transfer;
         }
 
         public IAddressRepository Address   { get; }
         public IApplicationUserRepository User  { get; }
+        public ITransferRepository Transfer { get; }
 
         public async Task BeginTransactionAsync()
         {

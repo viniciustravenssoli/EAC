@@ -1,6 +1,8 @@
 ﻿using EAC.Domain.Entities;
 using EAC.Domain.Interfaces;
 using EAC.Infra.Context;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +23,9 @@ namespace EAC.Infra.Repositories
             return address.Id;
         }
 
-        public Task<Address> GetAddressByIdAsync(int id)
+        public async Task<Address> GetAddressByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Addresses.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public Task<List<Address>> GetAllAsync(int top, int skip)
@@ -34,6 +36,12 @@ namespace EAC.Infra.Repositories
         public Task<List<Address>> GetAllByUserId(int top, int skip, string userId)
         {
             throw new NotImplementedException();
+        }
+        public async Task DeleteAddressAsync(Address addressToRemove)
+        {
+            _dbContext.Addresses.Remove(addressToRemove);
+            await _dbContext.SaveChangesAsync();
+
         }
     }
 }
